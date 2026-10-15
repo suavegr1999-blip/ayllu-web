@@ -1,0 +1,1686 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          ayllu: {
+            black: '#08090b',
+            dark: '#0f1115',
+            surface: '#16191f',
+            card: '#1c2027',
+            border: '#272d37',
+            concrete: '#7d8590',
+            lightGray: '#d0d5dd',
+            gold: '#f59e0b',
+            goldHover: '#d97706',
+            amberAccent: '#fbbf24',
+            orangeAccent: '#f97316'
+          }
+        },
+        fontFamily: {
+          title: ['Syne', 'sans-serif'],
+          sans: ['Plus Jakarta Sans', 'sans-serif'],
+          mono: ['Space Grotesk', 'monospace']
+        },
+        backgroundImage: {
+          'blueprint-grid': "linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px)"
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #08090b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #272d37;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b;
+  }
+
+  .blueprint-bg {
+    background-size: 36px 36px;
+  }
+  
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gold-gradient-bg {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #b45309 100%);
+  }
+
+  .blueprint-corner {
+    position: relative;
+  }
+  .blueprint-corner::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid #f59e0b;
+    border-left: 2px solid #f59e0b;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .blueprint-corner::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 14px;
+    height: 14px;
+    border-bottom: 2px solid #f59e0b;
+    border-right: 2px solid #f59e0b;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .modal-active {
+    overflow: hidden;
+  }
+
+  @keyframes pulseAyllu {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+    50% { transform: scale(1.06); box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+  }
+  .whatsapp-pulse {
+    animation: pulseAyllu 2.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
+
+  /* Filtro de animación para galería */
+  .gallery-item {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+</style>
+
+<div id="ayllu-app" class="bg-ayllu-black text-gray-200 font-sans antialiased selection:bg-ayllu-gold selection:text-black blueprint-bg bg-blueprint-grid min-h-screen relative">
+
+  <!-- Top bar con coordenadas, ubicación y accesos rápidos a redes oficiales -->
+  <aside aria-label="Información de contacto rápido" class="border-b border-ayllu-border/70 bg-ayllu-dark/95 text-xs py-2 px-4 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-3 sm:gap-4 text-ayllu-concrete">
+        <span class="flex items-center gap-1.5 hover:text-ayllu-gold transition-colors font-mono">
+          <i class="fa-solid fa-location-dot text-ayllu-gold"></i>
+          <span>Cochabamba, Bolivia</span>
+        </span>
+        <span class="hidden sm:inline-block text-gray-700">|</span>
+        <span class="hidden sm:flex items-center gap-1.5 text-ayllu-lightGray">
+          <i class="fa-solid fa-compass-drafting text-ayllu-gold"></i>
+          <span>Estudio de Arquitectura & Construcción</span>
+        </span>
+      </div>
+      
+      <div class="flex items-center gap-4 ml-auto text-xs">
+        <a id="topbar-tiktok" href="https://www.tiktok.com/@aylluconst?_r=1&_t=ZS-9AYRKH2p58Q" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-ayllu-gold transition-colors flex items-center gap-1.5" title="TikTok Oficial">
+          <i class="fa-brands fa-tiktok"></i>
+          <span class="hidden md:inline">TikTok</span>
+        </a>
+        <a id="topbar-facebook" href="https://www.facebook.com/share/1BS6YG1wpR/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-ayllu-gold transition-colors flex items-center gap-1.5" title="Facebook Oficial">
+          <i class="fa-brands fa-facebook-f"></i>
+          <span class="hidden md:inline">Facebook</span>
+        </a>
+        <a id="topbar-whatsapp" href="https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto." target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 transition-colors flex items-center gap-1.5 font-semibold">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span class="hidden md:inline">WhatsApp Directo</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <header class="bg-ayllu-black/95 border-b border-ayllu-border backdrop-blur-xl sticky top-8 z-40 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- LOGOTIPO CORPORATIVO OFICIAL EXACTO DE AYLLU -->
+      <a href="#inicio" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-ayllu-gold rounded-lg p-1" title="AYLLU Diseño & Construcciones">
+        
+        <!-- Imagotipo Oficial: Silueta exacta de cubiertas y cimientos (Imagen 1) -->
+        <div class="relative w-12 h-12 flex-shrink-0 bg-ayllu-dark rounded-lg border border-ayllu-border p-1.5 group-hover:border-ayllu-gold transition-colors flex items-center justify-center">
+          <svg viewBox="0 0 100 85" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Isotipo AYLLU">
+            <!-- Barra dorada lateral izquierda -->
+            <rect x="9" y="47" width="5.5" height="34" rx="0.5" fill="#f59e0b" />
+            <!-- Silueta Principal Frontal Blanca (casa izquierda y cumbrera) -->
+            <path d="M50 12 L18 39 L18 85 L24 85 L24 43 L50 21 L56 26 L56 20 Z" fill="#ffffff" />
+            <!-- Cubierta Intermedia Naranja / Dorada -->
+            <path d="M54 31 L77 50 L77 82 L72 82 L72 52 L54 37 Z" fill="#f59e0b" />
+            <!-- Cubierta Exterior Gris Cemento -->
+            <path d="M58 23 L85 45 L85 82 L80 82 L80 47 L58 29 Z" fill="#9ca3af" />
+            <!-- Cimiento horizontal inferior dorado -->
+            <rect x="27" y="76" width="43" height="2.8" rx="0.5" fill="#f59e0b" />
+          </svg>
+        </div>
+        
+        <!-- Logotipo tipográfico fiel a la Imagen 2 con Casco de Obra -->
+        <div class="flex flex-col">
+          <div class="flex items-center tracking-wider font-extrabold text-xl text-white font-title leading-tight">
+            <span class="gold-gradient-text tracking-widest">AYLLU</span>
+            <span class="ml-1.5 text-[10px] text-ayllu-gold bg-ayllu-gold/10 px-1.5 py-0.5 rounded border border-ayllu-gold/30 font-mono hidden sm:inline-block">COCHABAMBA</span>
+          </div>
+          <span class="text-[9px] uppercase tracking-[0.24em] text-gray-400 font-semibold font-mono">
+            Diseño & Construcciones
+          </span>
+        </div>
+      </a>
+
+      <!-- Menú Desktop -->
+      <nav class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+        <a href="#inicio" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Inicio</a>
+        <a href="#servicios" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Servicios</a>
+        <a href="#proyectos" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Proyectos</a>
+        <a href="#nosotros" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Nosotros</a>
+        <a href="#proceso" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Metodología</a>
+        <a href="#contacto" class="text-gray-300 hover:text-ayllu-gold transition-colors py-1">Contacto</a>
+      </nav>
+
+      <!-- Botón de acción Navbar -->
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="#cotizacion" class="relative group overflow-hidden px-5 py-2.5 rounded-xl text-sm font-bold text-black gold-gradient-bg shadow-lg shadow-ayllu-gold/20 hover:shadow-ayllu-gold/40 transition-all active:scale-95">
+          <span class="relative z-10 flex items-center gap-2">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>Cotizar Proyecto</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Botón Móvil -->
+      <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-ayllu-card focus:outline-none" aria-label="Abrir Menú de Navegación">
+        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+      </button>
+    </div>
+
+    <!-- Menú Desplegable Móvil -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-ayllu-border bg-ayllu-dark/98 px-4 pt-3 pb-6 space-y-2">
+      <a href="#inicio" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Inicio</a>
+      <a href="#servicios" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Servicios Profesionales</a>
+      <a href="#proyectos" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Galería de Proyectos</a>
+      <a href="#nosotros" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Sobre AYLLU</a>
+      <a href="#proceso" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Proceso de Trabajo</a>
+      <a href="#cotizacion" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-ayllu-gold bg-ayllu-gold/10 font-bold border border-ayllu-gold/30">
+        <i class="fa-solid fa-calculator mr-2"></i> Solicitar Cotización
+      </a>
+      <a href="#contacto" class="mobile-nav-link block px-3 py-2.5 rounded-md text-base font-medium text-gray-200 hover:bg-ayllu-card hover:text-ayllu-gold">Contacto & Ubicación</a>
+      
+      <div class="pt-4 border-t border-ayllu-border/70 flex justify-around">
+        <a id="mobile-tiktok-link" href="https://www.tiktok.com/@aylluconst?_r=1&_t=ZS-9AYRKH2p58Q" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-400 hover:text-ayllu-gold text-lg" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a id="mobile-facebook-link" href="https://www.facebook.com/share/1BS6YG1wpR/" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-400 hover:text-ayllu-gold text-lg" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a id="mobile-whatsapp-nav" href="https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto." target="_blank" rel="noopener noreferrer" class="p-2 text-green-400 hover:text-green-300 text-lg" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="relative min-h-[92vh] flex items-center justify-center overflow-hidden border-b border-ayllu-border">
+      <!-- Fondo arquitectónico con overlay gradiente oscuro -->
+      <div class="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80" 
+          alt="Diseño Arquitectónico Contemporáneo y Construcción AYLLU" 
+          class="w-full h-full object-cover object-center brightness-[0.28] contrast-125 scale-105"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-ayllu-black via-ayllu-black/80 to-transparent"></div>
+        <div class="absolute inset-0 bg-radial from-transparent via-black/40 to-ayllu-black"></div>
+      </div>
+
+      <!-- Coordenadas técnicas arquitectónicas -->
+      <div class="absolute top-6 left-6 text-[11px] font-mono text-ayllu-concrete/60 hidden md:block">
+        + COCHABAMBA // BOLIVIA<br>
+        COORD: 17°23'S 66°09'W
+      </div>
+      <div class="absolute bottom-6 right-6 text-[11px] font-mono text-ayllu-gold/60 text-right hidden md:block">
+        PROJECT SPEC: AYLLU.BO<br>
+        ARQUITECTURA &bull; MELAMINA &bull; OBRAS
+      </div>
+
+      <!-- Contenido Hero Central -->
+      <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        
+        <!-- Emblema de encabezado con el imagotipo oficial vectorizado -->
+        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-ayllu-dark/90 border border-ayllu-gold/40 text-ayllu-amberAccent text-xs sm:text-sm font-semibold mb-8 backdrop-blur-md">
+          <span class="w-2.5 h-2.5 rounded-full bg-ayllu-gold animate-ping"></span>
+          <span>ESTUDIO ARQUITECTÓNICO & CONSTRUCTORA EN COCHABAMBA</span>
+        </div>
+
+        <!-- Banner del logo oficial completo con Casco de Ingeniería y Arquitectura -->
+        <div class="max-w-lg mx-auto mb-6 px-4">
+          <svg viewBox="0 0 520 185" class="w-full h-auto drop-shadow-2xl" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="aylluGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fbbf24" />
+                <stop offset="60%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#d97706" />
+              </linearGradient>
+            </defs>
+            <!-- Techo V invertido blanco con brazos hacia los lados -->
+            <path d="M106 20 L248 116 L248 126 L106 30 Z" fill="#ffffff" />
+            <path d="M380 20 L248 116 L248 126 L380 30 Z" fill="#ffffff" />
+            <!-- Casco central de construcción blanco -->
+            <path d="M248 36 C232 36 225 48 225 58 C225 64 227 68 230 70 C228 72 227 75 228 77 C229 80 232 81 236 80 C238 84 243 85 248 85 C253 85 258 84 260 80 C264 81 267 80 268 77 C269 75 268 72 266 70 C269 68 271 64 271 58 C271 48 264 36 248 36 Z" fill="#ffffff" />
+            <path d="M245 38 L245 55 L251 55 L251 38 Z" fill="#1c2027" />
+            
+            <!-- Letra A geométrica dorada -->
+            <path d="M106 32 L106 140 L118 140 L118 84 L154 84 L154 140 L166 140 L166 72 L118 72 L118 40 Z" fill="url(#aylluGoldGrad)" />
+            <!-- Y central blanca -->
+            <path d="M242 116 L242 140 L254 140 L254 116 Z" fill="#ffffff" />
+            <!-- Letra L blanca 1 -->
+            <path d="M288 80 L300 80 L300 128 L324 128 L324 140 L288 140 Z" fill="#e2e8f0" />
+            <!-- Letra L blanca 2 -->
+            <path d="M336 80 L348 80 L348 128 L372 128 L372 140 L336 140 Z" fill="#e2e8f0" />
+            <!-- Letra U dorada -->
+            <path d="M382 28 L394 28 L394 130 C394 136 398 140 404 140 C410 140 414 136 414 130 L414 28 L426 28 L426 130 C426 142 416 150 404 150 C392 150 382 142 382 130 Z" fill="url(#aylluGoldGrad)" />
+
+            <!-- Subtítulo: DISEÑO & CONSTRUCCIONES en blanco -->
+            <text x="260" y="172" text-anchor="middle" font-family="'Syne', sans-serif" font-size="22" font-weight="800" fill="#ffffff" letter-spacing="4">DISEÑO &amp; CONSTRUCCIONES</text>
+            <!-- Línea inferior decorativa con rombo central -->
+            <rect x="30" y="181" width="210" height="2.5" fill="url(#aylluGoldGrad)" />
+            <polygon points="260,178 265,182.2 260,186.5 255,182.2" fill="#f59e0b" />
+            <rect x="280" y="181" width="210" height="2.5" fill="url(#aylluGoldGrad)" />
+          </svg>
+        </div>
+
+        <h1 class="sr-only">AYLLU Diseño &amp; Construcciones - Cochabamba Bolivia</h1>
+
+        <!-- Eslogan corporativo oficial -->
+        <p class="text-xl sm:text-2xl md:text-3xl text-gray-200 font-light italic mb-6 max-w-3xl mx-auto font-sans">
+          “Diseñamos tus ideas, construimos tus sueños”.
+        </p>
+
+        <!-- Breve presentación de alto impacto -->
+        <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
+          Especialistas en diseño arquitectónico, elaboración técnica de planos, fabricación integral de muebles en melamina a medida, ejecución de obras civiles y remodelaciones de alto estándar en Cochabamba, Bolivia.
+        </p>
+
+        <!-- Botones de Acción Principales -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+          <button onclick="openDirectWhatsAppModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl text-black font-extrabold text-base gold-gradient-bg shadow-xl shadow-ayllu-gold/25 hover:shadow-ayllu-gold/45 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            <span>Solicitar una cotización</span>
+          </button>
+
+          <a href="#proyectos" class="w-full sm:w-auto px-8 py-4 rounded-xl text-white font-bold text-base bg-ayllu-card/90 border border-ayllu-border hover:border-ayllu-gold/80 hover:bg-ayllu-surface transition-all flex items-center justify-center gap-3 backdrop-blur-sm">
+            <i class="fa-solid fa-layer-group text-ayllu-gold"></i>
+            <span>Ver nuestros proyectos</span>
+          </a>
+        </div>
+
+        <!-- Indicador de servicios express -->
+        <div class="mt-14 pt-8 border-t border-ayllu-border/60 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div class="p-3 bg-ayllu-dark/40 rounded-xl border border-white/5">
+            <span class="block text-xl font-bold text-white font-mono">100%</span>
+            <span class="text-xs text-ayllu-concrete">Personalizado</span>
+          </div>
+          <div class="p-3 bg-ayllu-dark/40 rounded-xl border border-white/5">
+            <span class="block text-xl font-bold text-ayllu-gold font-mono">Planos</span>
+            <span class="text-xs text-ayllu-concrete">Técnicos & 3D</span>
+          </div>
+          <div class="p-3 bg-ayllu-dark/40 rounded-xl border border-white/5">
+            <span class="block text-xl font-bold text-white font-mono">Melamina</span>
+            <span class="text-xs text-ayllu-concrete">Cocinas & Roperos</span>
+          </div>
+          <div class="p-3 bg-ayllu-dark/40 rounded-xl border border-white/5">
+            <span class="block text-xl font-bold text-ayllu-gold font-mono">Obras</span>
+            <span class="text-xs text-ayllu-concrete">Ejecución en Obra</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" class="py-24 bg-ayllu-dark relative border-b border-ayllu-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-shapes"></i> Soluciones Integrales
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-title font-extrabold text-white uppercase tracking-tight">
+            Nuestros <span class="gold-gradient-text">Servicios Profesionales</span>
+          </h2>
+          <p class="text-gray-400 mt-4 text-base sm:text-lg">
+            Cubrimos desde la concepción gráfica y cálculo de planos hasta la entrega llave en mano de obras y mobiliario en melamina de máxima durabilidad en Cochabamba.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Servicio 1: Diseño Arquitectónico -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80" alt="Diseño Arquitectónico" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                01 / ARQ
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Diseño Arquitectónico</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Diseño de viviendas unifamiliares, edificios residenciales, locales comerciales y proyectos vanguardistas con modelado 3D fotorrealista.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Diseño Arquitectónico')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 2: Elaboración de Planos -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" alt="Elaboración de Planos Técnicos" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                02 / PLANOS
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Elaboración de Planos</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Planos arquitectónicos, distribución técnica de ambientes, cortes, elevaciones y documentación técnica según el alcance de cada proyecto.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Elaboración de Planos')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 3: Muebles en Melamina -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80" alt="Muebles en Melamina a Medida" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                03 / MELAMINA
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Muebles en Melamina</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Diseño, fabricación e instalación de cocinas modernas, roperos, vestidores, muebles de baño, escritorios, veladores y mobiliario personalizado.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Muebles en Melamina')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 4: Construcción y Obras -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=600&q=80" alt="Construcción y Ejecución de Obras" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                04 / OBRA
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Construcción y Obras</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Construcción integral de viviendas, locales comerciales, ampliaciones y diferentes proyectos constructivos con estricto control de calidad.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Construcción y Ejecución de Obras')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 5: Remodelaciones -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" alt="Remodelaciones y Renovaciones" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                05 / REMODEL
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Remodelaciones</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Renovación de viviendas, cocinas, baños, oficinas y espacios comerciales modernizando instalaciones y distribución arquitectónica.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Remodelaciones')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 6: Diseño de Interiores -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80" alt="Diseño de Interiores" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                06 / INTERIOR
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Diseño de Interiores</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Espacios modernos, funcionales y personalizados, con cuidada selección de materiales nobles, iluminación arquitectónica y colores.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Diseño de Interiores')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 7: Supervisión de Obras -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" alt="Supervisión de Obras" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                07 / CONTROL
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Supervisión de Obras</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Seguimiento y control riguroso de los trabajos de construcción y cumplimiento de especificaciones según el servicio contratado.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Supervisión de Obras')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- Servicio 8: Servicios Complementarios -->
+          <article class="group bg-ayllu-surface rounded-2xl overflow-hidden border border-ayllu-border hover:border-ayllu-gold/70 transition-all duration-300 flex flex-col justify-between blueprint-corner">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=600&q=80" alt="Servicios Complementarios" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ayllu-surface via-ayllu-surface/40 to-transparent"></div>
+              <span class="absolute top-3 right-3 bg-ayllu-black/80 text-ayllu-gold font-mono text-xs px-2.5 py-1 rounded border border-ayllu-gold/40">
+                08 / PLUS
+              </span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 font-title group-hover:text-ayllu-gold transition-colors">Servicios Complementarios</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                  Otros trabajos especializados relacionados con arquitectura, diseño, construcción y equipamiento integral de espacios en Cochabamba.
+                </p>
+              </div>
+              <button onclick="requestServiceQuote('Servicios Complementarios')" class="w-full py-2.5 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black text-gray-200 border border-ayllu-border hover:border-ayllu-gold text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Consultar por WhatsApp</span>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="proyectos" class="py-24 bg-ayllu-black relative border-b border-ayllu-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-3">
+              <i class="fa-solid fa-camera"></i> Galería de Trabajos
+            </div>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-title font-extrabold text-white uppercase tracking-tight">
+              Portafolio de <span class="gold-gradient-text">Proyectos</span>
+            </h2>
+          </div>
+          <!-- Aviso explícito de demostración de alta calidad -->
+          <div class="max-w-md bg-ayllu-card/90 border border-ayllu-border p-3.5 rounded-xl text-xs text-ayllu-concrete flex items-start gap-3 shadow-lg">
+            <i class="fa-solid fa-circle-info text-ayllu-gold mt-0.5 text-sm"></i>
+            <div>
+              <strong class="text-gray-300 block mb-0.5">Nota de Demostración:</strong>
+              <span>Las siguientes imágenes son de muestra ilustrativa para exhibir las tipologías y capacidades técnicas de AYLLU en cada categoría.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Filtro por Categorías Solicitadas -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar text-xs sm:text-sm">
+          <button onclick="filterGallery('todos')" class="gallery-btn active px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-gold text-black border border-ayllu-gold" data-category="todos">
+            Todos
+          </button>
+          <button onclick="filterGallery('arquitectura')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="arquitectura">
+            Arquitectura y diseño de planos
+          </button>
+          <button onclick="filterGallery('viviendas')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="viviendas">
+            Viviendas y fachadas
+          </button>
+          <button onclick="filterGallery('construccion')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="construccion">
+            Construcción y ejecución de obras
+          </button>
+          <button onclick="filterGallery('cocinas')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="cocinas">
+            Cocinas en melamina
+          </button>
+          <button onclick="filterGallery('roperos')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="roperos">
+            Roperos y vestidores
+          </button>
+          <button onclick="filterGallery('muebles')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="muebles">
+            Muebles personalizados
+          </button>
+          <button onclick="filterGallery('interiores')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="interiores">
+            Diseño de interiores
+          </button>
+          <button onclick="filterGallery('remodelaciones')" class="gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border" data-category="remodelaciones">
+            Remodelaciones
+          </button>
+        </div>
+
+        <!-- Rejilla de Proyectos -->
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- 1. Arquitectura y Planos -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="arquitectura" onclick="openLightbox('Planimetría Técnica & Modelado 3D', 'Elaboración técnica de planos con dimensionamiento riguroso, distribución espacial y cortes arquitectónicos.', 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80', 'Arquitectura y diseño de planos')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=700&q=80" alt="Planos Técnicos Arquitectónicos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Arquitectura y Planos</span>
+              <h4 class="text-lg font-bold text-white font-title">Planimetría Técnica & Modelado 3D</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Documentación para construcción, anteproyectos y visualización fotorrealista.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Viviendas y Fachadas -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="viviendas" onclick="openLightbox('Residencia Contemporánea', 'Fachada con volúmenes limpios, ventanales de piso a techo y combinación de concreto y madera.', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', 'Viviendas y fachadas')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80" alt="Fachada Moderna" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Viviendas y Fachadas</span>
+              <h4 class="text-lg font-bold text-white font-title">Residencia Contemporánea</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Diseño de vivienda unifamiliar moderna con iluminación perimetral cálida.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Construcción y Ejecución de Obras -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="construccion" onclick="openLightbox('Estructura de Hormigón y Obra Gruesa', 'Ejecución de fundaciones, vigas, columnas y vaciado de losas con supervisión técnica continua.', 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=1200&q=80', 'Construcción y ejecución de obras')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=700&q=80" alt="Construcción en Obra" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Construcción y Obras</span>
+              <h4 class="text-lg font-bold text-white font-title">Estructura & Obra Gruesa</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Control minucioso de materiales, dosificación y cumplimiento de cronogramas.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Cocinas en Melamina -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="cocinas" onclick="openLightbox('Cocina Integral con Isla Central', 'Melamina hidrófuga de alta resistencia, correderas telescópicas pesadas y tiradores ocultos.', 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80', 'Cocinas en melamina')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=80" alt="Cocina en Melamina" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Cocinas en Melamina</span>
+              <h4 class="text-lg font-bold text-white font-title">Cocina Integral Isla Central</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Optimización ergonómica de gavetas, alacenas y combinación grafito-madera.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Roperos y Vestidores -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="roperos" onclick="openLightbox('Vestidor Master Walk-In', 'Distribución para vestidores con compartimentos para calzado, pantaloneros e iluminación LED.', 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=1200&q=80', 'Roperos y vestidores')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=700&q=80" alt="Roperos y Vestidores" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Roperos y Vestidores</span>
+              <h4 class="text-lg font-bold text-white font-title">Vestidor Master Walk-In</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Fabricación milimétrica a medida para dormitorios principales y secundarios.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Muebles Personalizados -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="muebles" onclick="openLightbox('Panel TV & Home Office Flotante', 'Mobiliario para salas de entretenimiento, home office, escritorios y veladores a medida.', 'https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&w=1200&q=80', 'Muebles personalizados')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&w=700&q=80" alt="Muebles Personalizados" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Muebles Personalizados</span>
+              <h4 class="text-lg font-bold text-white font-title">Panel TV & Espacio de Trabajo</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Panelería ranurada acústica y almacenamiento con pasacables invisibles.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Diseño de Interiores -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="interiores" onclick="openLightbox('Interiorismo Sala-Comedor Integrada', 'Coordinación lumínica y combinación de texturas cálidas para ambientes integrados.', 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80', 'Diseño de interiores')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=700&q=80" alt="Diseño de Interiores" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Diseño de Interiores</span>
+              <h4 class="text-lg font-bold text-white font-title">Interiorismo y Confort</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Selección armónica de acabados, luminarias cálidas y texturas de concreto.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Remodelaciones -->
+          <div class="gallery-item group relative rounded-2xl overflow-hidden bg-ayllu-surface border border-ayllu-border cursor-pointer" data-category="remodelaciones" onclick="openLightbox('Remodelación Integral de Baño & Cocina', 'Sustitución de tuberías, revestimientos de gran formato y artefactos de bajo consumo.', 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80', 'Remodelaciones')">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80" alt="Remodelaciones" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity flex flex-col justify-end p-6">
+              <span class="text-xs font-mono text-ayllu-gold uppercase tracking-wider mb-1">Remodelaciones</span>
+              <h4 class="text-lg font-bold text-white font-title">Modernización de Espacios</h4>
+              <p class="text-xs text-gray-300 mt-1 line-clamp-2">Transformación integral de recintos antiguos en ambientes iluminados y eficientes.</p>
+              <div class="mt-3 flex items-center text-xs text-ayllu-amberAccent font-semibold gap-1.5">
+                <i class="fa-solid fa-expand"></i> Ver proyecto ampliado
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="nosotros" class="py-24 bg-ayllu-dark relative border-b border-ayllu-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Elemento visual con imagotipo oficial integrado -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative mx-auto max-w-md lg:max-w-none">
+              <div class="relative rounded-2xl overflow-hidden border-2 border-ayllu-border p-2 bg-ayllu-card shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80" alt="Estudio AYLLU Cochabamba" class="w-full h-auto rounded-xl object-cover grayscale contrast-125" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-tr from-ayllu-black/80 via-transparent to-ayllu-gold/20"></div>
+              </div>
+              
+              <div class="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 bg-ayllu-black border border-ayllu-gold p-4 sm:p-5 rounded-2xl shadow-2xl max-w-xs">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-ayllu-gold/15 border border-ayllu-gold/40 flex items-center justify-center text-ayllu-gold text-2xl">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-white font-bold text-sm">Garantía Técnica</h5>
+                    <p class="text-[11px] text-gray-400">Atención profesional en cada etapa constructiva.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-4">
+              <i class="fa-solid fa-building-user"></i> Identidad y Filosofía
+            </div>
+            
+            <h2 class="text-3xl sm:text-4xl font-title font-extrabold text-white uppercase tracking-tight mb-6">
+              Transformamos tus ideas en <span class="gold-gradient-text">espacios funcionales, estéticos y duraderos</span>
+            </h2>
+
+            <p class="text-gray-300 text-base leading-relaxed mb-6 font-sans">
+              En <strong class="text-white font-semibold">AYLLU DISEÑO & CONSTRUCCIONES</strong> concebimos cada edificación, plano o mobiliario como una inversión vital para familias y empresas en Cochabamba. Unimos la rigurosidad técnica de la ingeniería y la sensibilidad del diseño arquitectónico con la precisión artesanal en melamina.
+            </p>
+
+            <!-- Misión y Visión (Espacios editables respetando datos no inventados) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
+              <div class="p-5 rounded-xl bg-ayllu-surface border border-ayllu-border">
+                <h4 class="text-sm font-bold text-ayllu-gold uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <i class="fa-solid fa-bullseye"></i> Misión
+                </h4>
+                <p class="text-xs text-gray-300 leading-relaxed">
+                  Brindar servicios integrales de arquitectura, diseño interior, mobiliario a medida y construcción con altos estándares de calidad, adaptados a la realidad y requerimientos de cada cliente.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-xl bg-ayllu-surface border border-ayllu-border">
+                <h4 class="text-sm font-bold text-ayllu-gold uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <i class="fa-solid fa-eye"></i> Visión
+                </h4>
+                <p class="text-xs text-gray-300 leading-relaxed">
+                  Ser una empresa referente en Cochabamba y el país por la seriedad, innovación en el diseño, transparencia constructiva y acabados impecables en cada obra entregada.
+                </p>
+              </div>
+            </div>
+
+            <!-- Valores corporativos solicitados -->
+            <div class="space-y-3">
+              <h4 class="text-xs uppercase font-mono tracking-widest text-ayllu-concrete mb-3 font-semibold">Nuestros Valores Fundamentales:</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Compromiso y responsabilidad</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Calidad en cada proyecto</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Diseño personalizado</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Innovación y creatividad</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Trabajo en equipo</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                  <i class="fa-solid fa-circle-check text-ayllu-gold text-sm"></i>
+                  <span>Atención a las necesidades del cliente</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="proceso" class="py-24 bg-ayllu-black relative border-b border-ayllu-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-diagram-project"></i> Flujo Metodológico
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-title font-extrabold text-white uppercase tracking-tight">
+            Cómo <span class="gold-gradient-text">Trabajamos</span>
+          </h2>
+          <p class="text-gray-400 mt-4 text-base sm:text-lg">
+            Un proceso ordenado, transparente y colaborativo para que tengas control total de cronogramas, materiales y costos.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Paso 1 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl gold-gradient-bg text-black font-extrabold font-mono flex items-center justify-center text-lg mb-4 shadow-lg shadow-ayllu-gold/20">
+                01
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Primer Contacto</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Nos escribes por WhatsApp o dejas tu solicitud. Conversamos sobre tu idea inicial y coordinamos una reunión presencial o virtual en Cochabamba.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // ATENCIÓN PERSONALIZADA
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-ayllu-surface text-ayllu-gold border border-ayllu-gold/40 font-extrabold font-mono flex items-center justify-center text-lg mb-4">
+                02
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Reunión y Análisis de Necesidades</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Revisión del espacio o lote, toma de medidas, análisis de requerimientos funcionales, gustos estéticos y presupuesto de inversión.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // LEVANTAMIENTO EN SITIO
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-ayllu-surface text-ayllu-gold border border-ayllu-gold/40 font-extrabold font-mono flex items-center justify-center text-lg mb-4">
+                03
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Propuesta de Diseño y Presupuesto</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Elaboración de la propuesta espacial, opciones de distribución, alternativas de melamina y un presupuesto detallado sin sorpresas.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // TRANSPARENCIA TOTAL
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-ayllu-surface text-ayllu-gold border border-ayllu-gold/40 font-extrabold font-mono flex items-center justify-center text-lg mb-4">
+                04
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Planificación y Coordinación</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Aprobación de planos finales, especificaciones técnicas de herrajes o materiales constructivos y fijación de cronogramas de entrega.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // CRONOGRAMA & TÉCNICA
+            </div>
+          </div>
+
+          <!-- Paso 5 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-ayllu-surface text-ayllu-gold border border-ayllu-gold/40 font-extrabold font-mono flex items-center justify-center text-lg mb-4">
+                05
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Ejecución del Proyecto</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Construcción en obra o armado e instalación de melamina en sitio, con control técnico riguroso de cada detalle arquitectónico.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // SUPERVISIÓN CONTINUA
+            </div>
+          </div>
+
+          <!-- Paso 6 -->
+          <div class="bg-ayllu-card/70 border border-ayllu-border p-6 rounded-2xl relative hover:border-ayllu-gold/60 transition-colors flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl gold-gradient-bg text-black font-extrabold font-mono flex items-center justify-center text-lg mb-4 shadow-lg shadow-ayllu-gold/20">
+                06
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 font-title">Entrega y Revisión Final</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Inspección minuciosa del trabajo culminado junto a ti, asegurando la máxima conformidad estética, funcional y estructural.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ayllu-border/50 text-[11px] font-mono text-ayllu-gold">
+              // CONFORMIDAD DEL CLIENTE
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-14 text-center">
+          <button onclick="startConsultationWhatsApp()" class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-base transition-all shadow-xl hover:shadow-green-600/30">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            <span>Iniciar una consulta por WhatsApp</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="cotizacion" class="py-24 bg-ayllu-dark relative border-b border-ayllu-border">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-file-pen"></i> Presupuesto Inmediato
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-title font-extrabold text-white uppercase tracking-tight">
+            Solicitar una <span class="gold-gradient-text">Cotización</span>
+          </h2>
+          <p class="text-gray-400 mt-4 text-base">
+            Completa los detalles de tu requerimiento. Al hacer clic en <strong>“Enviar Solicitud a WhatsApp”</strong>, se abrirá de inmediato la conversación con AYLLU conteniendo todos los datos ordenados técnicamente.
+          </p>
+        </div>
+
+        <div class="bg-ayllu-surface rounded-2xl border border-ayllu-border p-6 sm:p-10 shadow-2xl blueprint-corner">
+          
+          <form id="quote-form" onsubmit="handleQuoteSubmit(event)" class="space-y-6">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label for="client-name" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Nombre Completo <span class="text-ayllu-gold">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-500">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="client-name" 
+                    required 
+                    placeholder="Ej. Ing. Carlos Mendoza" 
+                    class="w-full pl-10 pr-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-ayllu-gold text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="client-whatsapp" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Número de WhatsApp <span class="text-ayllu-gold">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-500">
+                    <i class="fa-brands fa-whatsapp text-green-500"></i>
+                  </span>
+                  <input 
+                    type="tel" 
+                    id="client-whatsapp" 
+                    required 
+                    placeholder="Ej. 70712345 (o internacional)" 
+                    class="w-full pl-10 pr-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-ayllu-gold text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label for="service-needed" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Servicio Requerido <span class="text-ayllu-gold">*</span>
+                </label>
+                <select 
+                  id="service-needed" 
+                  required 
+                  class="w-full px-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white focus:outline-none focus:border-ayllu-gold text-sm"
+                >
+                  <option value="" disabled selected>Selecciona un servicio</option>
+                  <option value="Diseño Arquitectónico">Diseño Arquitectónico (Viviendas, Edificios, Locales)</option>
+                  <option value="Elaboración de Planos">Elaboración de Planos Técnicos y Distribución</option>
+                  <option value="Muebles en Melamina (Cocina, Ropero, Vestidor)">Muebles en Melamina a Medida</option>
+                  <option value="Construcción y Ejecución de Obras">Construcción y Ejecución de Obras Civiles</option>
+                  <option value="Remodelaciones">Remodelaciones y Refacciones</option>
+                  <option value="Diseño de Interiores">Diseño de Interiores y Ambientes</option>
+                  <option value="Supervisión de Obras">Supervisión y Fiscalización de Obras</option>
+                  <option value="Servicios Complementarios">Servicios Complementarios de Construcción</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="project-type" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Tipo de Proyecto <span class="text-ayllu-gold">*</span>
+                </label>
+                <select 
+                  id="project-type" 
+                  required 
+                  class="w-full px-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white focus:outline-none focus:border-ayllu-gold text-sm"
+                >
+                  <option value="Vivienda Unifamiliar / Casa">Vivienda Unifamiliar / Casa</option>
+                  <option value="Departamento">Departamento</option>
+                  <option value="Local Comercial / Negocio">Local Comercial / Negocio</option>
+                  <option value="Oficina / Espacio Corporativo">Oficina / Espacio Corporativo</option>
+                  <option value="Muebles de Cocina / Vestidor / Ropero">Muebles de Cocina / Vestidor</option>
+                  <option value="Edificio Residencial / Comercial">Edificio Residencial</option>
+                  <option value="Ampliación o Terreno sin construir">Ampliación / Terreno</option>
+                  <option value="Otro">Otro requerimiento</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label for="project-location" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Ubicación del Proyecto <span class="text-ayllu-gold">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-500">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="project-location" 
+                    required 
+                    placeholder="Ej. Cochabamba (Zona Norte, Tiquipaya, Sacaba, Quillacollo, etc.)" 
+                    class="w-full pl-10 pr-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-ayllu-gold text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="project-budget" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                  Presupuesto Aproximado (Opcional)
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-500">
+                    <i class="fa-solid fa-coins"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="project-budget" 
+                    placeholder="Ej. Bs. 20,000 / $us. 15,000 / Por definir" 
+                    class="w-full pl-10 pr-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-ayllu-gold text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                ¿Dispone de información previa del proyecto?
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <label class="flex items-center gap-2 p-3 bg-ayllu-card border border-ayllu-border rounded-xl cursor-pointer hover:border-ayllu-gold transition-colors text-xs">
+                  <input type="checkbox" name="has_data" value="Tengo Planos Técnicos" class="rounded text-ayllu-gold focus:ring-ayllu-gold">
+                  <span>Tengo Planos</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-ayllu-card border border-ayllu-border rounded-xl cursor-pointer hover:border-ayllu-gold transition-colors text-xs">
+                  <input type="checkbox" name="has_data" value="Tengo Fotografías del lugar" class="rounded text-ayllu-gold focus:ring-ayllu-gold">
+                  <span>Tengo Fotos</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-ayllu-card border border-ayllu-border rounded-xl cursor-pointer hover:border-ayllu-gold transition-colors text-xs">
+                  <input type="checkbox" name="has_data" value="Tengo Medidas o Dimensiones" class="rounded text-ayllu-gold focus:ring-ayllu-gold">
+                  <span>Tengo Medidas</span>
+                </label>
+                <label class="flex items-center gap-2 p-3 bg-ayllu-card border border-ayllu-border rounded-xl cursor-pointer hover:border-ayllu-gold transition-colors text-xs">
+                  <input type="checkbox" name="has_data" value="Tengo Referencias de Internet" class="rounded text-ayllu-gold focus:ring-ayllu-gold">
+                  <span>Referencias / Ideas</span>
+                </label>
+              </div>
+              <p class="text-[11px] text-gray-400 mt-2">
+                * Nota: Podrás adjuntar tus planos en PDF, bocetos o fotografías directamente en la conversación de WhatsApp.
+              </p>
+            </div>
+
+            <div>
+              <label for="project-description" class="block text-xs font-mono uppercase text-gray-300 font-bold mb-2">
+                Descripción de la idea o necesidad <span class="text-ayllu-gold">*</span>
+              </label>
+              <textarea 
+                id="project-description" 
+                rows="4" 
+                required 
+                placeholder="Cuéntanos con el mayor detalle posible: ambientes a intervenir, dimensiones tentativas, preferencias de colores de melamina o plazos estimados..." 
+                class="w-full px-4 py-3 bg-ayllu-card border border-ayllu-border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-ayllu-gold text-sm"
+              ></textarea>
+            </div>
+
+            <div id="form-feedback" class="hidden p-4 rounded-xl text-xs bg-green-950/40 border border-green-600/50 text-green-300">
+              <i class="fa-solid fa-check-circle mr-2 text-green-400"></i>
+              <span>Generando formato y abriendo WhatsApp con tu cotización...</span>
+            </div>
+
+            <button 
+              type="submit" 
+              class="w-full py-4 rounded-xl font-extrabold text-base text-black gold-gradient-bg shadow-xl shadow-ayllu-gold/25 hover:shadow-ayllu-gold/40 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 uppercase tracking-wider"
+            >
+              <i class="fa-brands fa-whatsapp text-2xl"></i>
+              <span>Enviar Solicitud a WhatsApp</span>
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="py-24 bg-ayllu-black relative border-b border-ayllu-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-ayllu-gold/10 border border-ayllu-gold/30 text-ayllu-amberAccent text-xs font-mono uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-address-book"></i> Canales Oficiales
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-title font-extrabold text-white uppercase tracking-tight">
+            Conecta con <span class="gold-gradient-text">AYLLU</span>
+          </h2>
+          <p class="text-gray-400 mt-4 text-base">
+            Estamos disponibles para responder tus preguntas, coordinar visitas técnicas a terreno y agendar citas de diseño en Cochabamba.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          
+          <!-- Canal 1: WhatsApp -->
+          <div class="bg-ayllu-card border border-ayllu-border hover:border-green-500/70 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 shadow-lg">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 text-3xl mb-5 group-hover:bg-green-500 group-hover:text-black transition-all">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2 font-title">WhatsApp Oficial</h3>
+              <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                Recepción inmediata de planos, cotizaciones rápidas y coordinación de visitas a obra en Cochabamba (+591 63954302).
+              </p>
+            </div>
+            <a id="btn-card-whatsapp" href="https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto." target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+              <span>Abrir WhatsApp</span>
+            </a>
+          </div>
+
+          <!-- Canal 2: TikTok -->
+          <div class="bg-ayllu-card border border-ayllu-border hover:border-pink-500/70 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 shadow-lg">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 text-3xl mb-5 group-hover:bg-pink-500 group-hover:text-black transition-all">
+                <i class="fa-brands fa-tiktok"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2 font-title">TikTok Oficial</h3>
+              <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                Videos de procesos de obra, tips de diseño arquitectónico y ensamble de muebles en melamina en @aylluconst.
+              </p>
+            </div>
+            <a id="btn-card-tiktok" href="https://www.tiktok.com/@aylluconst?_r=1&_t=ZS-9AYRKH2p58Q" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-ayllu-surface hover:bg-white hover:text-black text-gray-200 border border-ayllu-border font-bold text-sm flex items-center justify-center gap-2 transition-all">
+              <i class="fa-brands fa-tiktok text-lg"></i>
+              <span>Visitar TikTok</span>
+            </a>
+          </div>
+
+          <!-- Canal 3: Facebook -->
+          <div class="bg-ayllu-card border border-ayllu-border hover:border-blue-500/70 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 shadow-lg">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-3xl mb-5 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                <i class="fa-brands fa-facebook-f"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2 font-title">Página de Facebook</h3>
+              <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                Fotografías de entregas de proyectos, testimonios y novedades oficiales de AYLLU en Cochabamba.
+              </p>
+            </div>
+            <a id="btn-card-facebook" href="https://www.facebook.com/share/1BS6YG1wpR/" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all">
+              <i class="fa-brands fa-facebook-f text-lg"></i>
+              <span>Seguir en Facebook</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Información de atención y mapa de Cochabamba -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          <div class="lg:col-span-5 bg-ayllu-surface p-8 rounded-2xl border border-ayllu-border flex flex-col justify-between">
+            <div>
+              <h4 class="text-lg font-bold text-white mb-6 font-title flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-ayllu-gold"></i>
+                <span>Datos de Atención</span>
+              </h4>
+              <ul class="space-y-4 text-sm text-gray-300">
+                <li class="flex items-start gap-3">
+                  <i class="fa-solid fa-city text-ayllu-gold mt-1"></i>
+                  <div>
+                    <strong class="text-white block">Ciudad:</strong>
+                    <span>Cochabamba, Bolivia</span>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fa-solid fa-clock text-ayllu-gold mt-1"></i>
+                  <div>
+                    <strong class="text-white block">Horarios de Atención:</strong>
+                    <span>Lunes a Sábado &bull; 08:00 - 18:30</span>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fa-solid fa-envelope text-ayllu-gold mt-1"></i>
+                  <div>
+                    <strong class="text-white block">Correo Electrónico:</strong>
+                    <a id="label-email" href="mailto:aylluconst04@gmail.com" class="text-ayllu-gold hover:underline">aylluconst04@gmail.com</a>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fa-solid fa-phone text-ayllu-gold mt-1"></i>
+                  <div>
+                    <strong class="text-white block">Teléfono / WhatsApp:</strong>
+                    <a id="label-phone" href="https://wa.me/59163954302" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-ayllu-gold transition-colors">+591 63954302</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pt-6 mt-6 border-t border-ayllu-border">
+              <a id="btn-google-maps" href="https://maps.app.goo.gl/qe54f8c2wLzQh5B58" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-ayllu-card hover:bg-ayllu-gold hover:text-black border border-ayllu-border text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all">
+                <i class="fa-solid fa-location-arrow"></i>
+                <span>Abrir Ubicación en Google Maps</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 bg-ayllu-surface rounded-2xl border border-ayllu-border overflow-hidden min-h-[320px] relative">
+            <iframe 
+              title="Ubicación Cochabamba Bolivia"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121832.74811802334!2d-66.24131109983995!3d-17.393836109950796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3738e4a9e5ef3%3A0xe54d4554b4f52627!2sCochabamba%2C%20Bolivia!5e0!3m2!1ses!2sbo!4v1690000000000!5m2!1ses!2sbo" 
+              class="w-full h-full min-h-[340px] border-0 filter grayscale contrast-125 opacity-80 hover:opacity-100 hover:filter-none transition-all duration-500" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <div class="absolute top-4 left-4 bg-ayllu-black/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-ayllu-border text-xs text-white font-mono pointer-events-none">
+              <i class="fa-solid fa-map-pin text-ayllu-gold mr-1"></i> Cochabamba, Bolivia
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-ayllu-dark border-t border-ayllu-border text-gray-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-ayllu-card rounded-lg border border-ayllu-border p-1 flex items-center justify-center">
+              <svg viewBox="0 0 100 85" class="w-full h-full" fill="none">
+                <rect x="9" y="47" width="5.5" height="34" rx="0.5" fill="#f59e0b" />
+                <path d="M50 12 L18 39 L18 85 L24 85 L24 43 L50 21 L56 26 L56 20 Z" fill="#ffffff" />
+                <path d="M54 31 L77 50 L77 82 L72 82 L72 52 L54 37 Z" fill="#f59e0b" />
+                <path d="M58 23 L85 45 L85 82 L80 82 L80 47 L58 29 Z" fill="#9ca3af" />
+                <rect x="27" y="76" width="43" height="2.8" rx="0.5" fill="#f59e0b" />
+              </svg>
+            </div>
+            <span class="font-title font-bold text-lg text-white">AYLLU</span>
+          </div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Arquitectura moderna, elaboración técnica de planos, fabricación de muebles en melamina a medida y ejecución de obras en Cochabamba, Bolivia.
+          </p>
+          <p class="text-xs italic text-ayllu-gold">
+            “Diseñamos tus ideas, construimos tus sueños”.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-white font-title font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-ayllu-gold pl-2">
+            Navegación
+          </h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#inicio" class="hover:text-ayllu-gold transition-colors">Inicio</a></li>
+            <li><a href="#servicios" class="hover:text-ayllu-gold transition-colors">Servicios Profesionales</a></li>
+            <li><a href="#proyectos" class="hover:text-ayllu-gold transition-colors">Portafolio de Proyectos</a></li>
+            <li><a href="#nosotros" class="hover:text-ayllu-gold transition-colors">Sobre Nosotros</a></li>
+            <li><a href="#proceso" class="hover:text-ayllu-gold transition-colors">Proceso de Trabajo</a></li>
+            <li><a href="#cotizacion" class="hover:text-ayllu-gold transition-colors">Solicitar Cotización</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-title font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-ayllu-gold pl-2">
+            Especialidades
+          </h4>
+          <ul class="space-y-2 text-xs">
+            <li><span class="hover:text-white transition-colors cursor-default">Diseño Arquitectónico 3D</span></li>
+            <li><span class="hover:text-white transition-colors cursor-default">Planos de Construcción</span></li>
+            <li><span class="hover:text-white transition-colors cursor-default">Cocinas y Roperos en Melamina</span></li>
+            <li><span class="hover:text-white transition-colors cursor-default">Ejecución de Obras Civiles</span></li>
+            <li><span class="hover:text-white transition-colors cursor-default">Remodelaciones de Interiores</span></li>
+            <li><span class="hover:text-white transition-colors cursor-default">Supervisión Técnica</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-title font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-ayllu-gold pl-2">
+            Redes Sociales
+          </h4>
+          <p class="text-xs text-gray-400 mb-4">
+            Escríbenos directamente para agendar visitas a obra o consultas en Cochabamba.
+          </p>
+          <div class="flex items-center gap-3">
+            <a id="footer-whatsapp" href="https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto." target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-ayllu-card border border-ayllu-border hover:border-green-500 hover:text-green-400 flex items-center justify-center transition-colors text-base" title="WhatsApp (+591 63954302)">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a id="footer-tiktok" href="https://www.tiktok.com/@aylluconst?_r=1&_t=ZS-9AYRKH2p58Q" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-ayllu-card border border-ayllu-border hover:border-pink-500 hover:text-pink-400 flex items-center justify-center transition-colors text-base" title="TikTok Oficial">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a id="footer-facebook" href="https://www.facebook.com/share/1BS6YG1wpR/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl bg-ayllu-card border border-ayllu-border hover:border-blue-500 hover:text-blue-400 flex items-center justify-center transition-colors text-base" title="Facebook Oficial">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+          </div>
+          <div class="mt-4 text-[11px] font-mono text-gray-500">
+            Cochabamba &bull; Estado Plurinacional de Bolivia
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-ayllu-border/70 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <p class="text-gray-500 text-center sm:text-left">
+          &copy; <span id="current-year"></span> AYLLU DISEÑO & CONSTRUCCIONES. Todos los derechos reservados.
+        </p>
+
+        <a href="#inicio" class="inline-flex items-center gap-2 text-ayllu-concrete hover:text-ayllu-gold transition-colors font-mono uppercase text-xs" aria-label="Volver al inicio">
+          <span>Subir al inicio</span>
+          <i class="fa-solid fa-arrow-up"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="fixed bottom-6 right-6 z-50 flex items-center group">
+    <span class="mr-3 px-3 py-1.5 rounded-lg bg-ayllu-black/95 text-white text-xs font-semibold border border-ayllu-border shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden sm:inline-block whitespace-nowrap">
+      ¿Conversamos de tu proyecto?
+    </span>
+    <a 
+      id="floating-whatsapp-btn"
+      href="https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto." 
+      target="_blank" 
+      rel="noopener noreferrer"
+      aria-label="Abrir WhatsApp con AYLLU Diseño & Construcciones"
+      class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center text-3xl shadow-2xl shadow-green-600/40 whatsapp-pulse transition-transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-4 focus:ring-green-400/50"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md p-4 sm:p-8 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col bg-ayllu-card rounded-2xl border border-ayllu-border overflow-hidden">
+      <div class="p-4 sm:p-6 border-b border-ayllu-border flex items-center justify-between">
+        <div>
+          <span id="modal-category" class="text-xs font-mono text-ayllu-gold uppercase tracking-wider"></span>
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-title font-bold text-white"></h3>
+        </div>
+        <button onclick="closeLightbox()" class="text-gray-400 hover:text-white p-2 text-2xl focus:outline-none" aria-label="Cerrar modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="relative flex-1 bg-black overflow-hidden flex items-center justify-center max-h-[60vh]">
+        <img id="modal-image" src="" alt="Vista ampliada proyecto" class="max-h-full max-w-full object-contain" />
+      </div>
+
+      <div class="p-4 sm:p-6 border-t border-ayllu-border bg-ayllu-surface flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <p id="modal-desc" class="text-sm text-gray-300 max-w-2xl"></p>
+        <button id="modal-quote-btn" class="px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 whitespace-nowrap">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Cotizar proyecto similar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="notice-modal" class="fixed bottom-24 left-6 z-40 max-w-sm hidden bg-ayllu-dark/95 border border-ayllu-gold/60 p-4 rounded-xl shadow-2xl backdrop-blur-md text-xs">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex items-center gap-2 text-ayllu-amberAccent font-bold">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Configuración Central AYLLU</span>
+      </div>
+      <button onclick="document.getElementById('notice-modal').classList.add('hidden')" class="text-gray-400 hover:text-white" aria-label="Cerrar aviso">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <p class="text-gray-300 mt-2">
+      Recuerda sustituir <code class="text-ayllu-gold">CONFIG.WHATSAPP_NUMBER</code>, <code class="text-ayllu-gold">CONFIG.TIKTOK_URL</code> y <code class="text-ayllu-gold">CONFIG.FACEBOOK_URL</code> con tus enlaces oficiales para que dirijan automáticamente a tus perfiles oficiales.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  /* =====================================================================
+   * CONFIGURACIÓN CENTRALIZADA DE ENLACES OFICIALES
+   * AYLLU DISEÑO & CONSTRUCCIONES
+   * ===================================================================== */
+  const AYLLU_CONTACT = {
+    name: "AYLLU DISEÑO & CONSTRUCCIONES",
+    whatsappNumber: "59163954302",
+    whatsappUrl: "https://wa.me/59163954302",
+    whatsappMessageUrl: "https://wa.me/59163954302?text=Hola%2C%20estoy%20interesado%2Fa%20en%20los%20servicios%20de%20AYLLU%20DISE%C3%91O%20%26%20CONSTRUCCIONES.%20Quisiera%20recibir%20informaci%C3%B3n%20y%20una%20cotizaci%C3%B3n%20para%20mi%20proyecto.",
+    tiktokUrl: "https://www.tiktok.com/@aylluconst?_r=1&_t=ZS-9AYRKH2p58Q",
+    facebookUrl: "https://www.facebook.com/share/1BS6YG1wpR/",
+    googleMapsUrl: "https://maps.app.goo.gl/qe54f8c2wLzQh5B58",
+    email: "aylluconst04@gmail.com",
+    emailUrl: "mailto:aylluconst04@gmail.com",
+    phoneDisplay: "+591 63954302",
+    defaultMessage: "Hola, estoy interesado/a en los servicios de AYLLU DISEÑO & CONSTRUCCIONES. Quisiera recibir información y una cotización para mi proyecto."
+  };
+
+  /* Inicialización general de la aplicación */
+  function initAylluApp() {
+    const yrElem = document.getElementById('current-year');
+    if (yrElem) yrElem.textContent = new Date().getFullYear();
+
+    applyCentralizedLinks();
+    setupMobileMenu();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAylluApp);
+  } else {
+    initAylluApp();
+  }
+
+  /* Aplica las variables de AYLLU_CONTACT a todos los elementos del DOM */
+  function applyCentralizedLinks() {
+    // Botón flotante permanente
+    const floatingBtn = document.getElementById('floating-whatsapp-btn');
+    if (floatingBtn) floatingBtn.href = AYLLU_CONTACT.whatsappMessageUrl;
+
+    // Top bar
+    const topWa = document.getElementById('topbar-whatsapp');
+    if (topWa) topWa.href = AYLLU_CONTACT.whatsappMessageUrl;
+    const topTiktok = document.getElementById('topbar-tiktok');
+    if (topTiktok) topTiktok.href = AYLLU_CONTACT.tiktokUrl;
+    const topFb = document.getElementById('topbar-facebook');
+    if (topFb) topFb.href = AYLLU_CONTACT.facebookUrl;
+
+    // Mobile nav
+    const mobWa = document.getElementById('mobile-whatsapp-nav');
+    if (mobWa) mobWa.href = AYLLU_CONTACT.whatsappMessageUrl;
+    const mobTt = document.getElementById('mobile-tiktok-link');
+    if (mobTt) mobTt.href = AYLLU_CONTACT.tiktokUrl;
+    const mobFb = document.getElementById('mobile-facebook-link');
+    if (mobFb) mobFb.href = AYLLU_CONTACT.facebookUrl;
+
+    // Tarjetas sección contacto
+    const cardWa = document.getElementById('btn-card-whatsapp');
+    if (cardWa) cardWa.href = AYLLU_CONTACT.whatsappMessageUrl;
+    const cardTt = document.getElementById('btn-card-tiktok');
+    if (cardTt) cardTt.href = AYLLU_CONTACT.tiktokUrl;
+    const cardFb = document.getElementById('btn-card-facebook');
+    if (cardFb) cardFb.href = AYLLU_CONTACT.facebookUrl;
+
+    // Google Maps & Información
+    const btnMaps = document.getElementById('btn-google-maps');
+    if (btnMaps) btnMaps.href = AYLLU_CONTACT.googleMapsUrl;
+
+    // Footer
+    const footerWa = document.getElementById('footer-whatsapp');
+    if (footerWa) footerWa.href = AYLLU_CONTACT.whatsappMessageUrl;
+    const footerTt = document.getElementById('footer-tiktok');
+    if (footerTt) footerTt.href = AYLLU_CONTACT.tiktokUrl;
+    const footerFb = document.getElementById('footer-facebook');
+    if (footerFb) footerFb.href = AYLLU_CONTACT.facebookUrl;
+
+    // Etiquetas de texto
+    const lblPhone = document.getElementById('label-phone');
+    if (lblPhone) {
+      lblPhone.textContent = AYLLU_CONTACT.phoneDisplay;
+      lblPhone.href = AYLLU_CONTACT.whatsappUrl;
+    }
+    const lblMail = document.getElementById('label-email');
+    if (lblMail) {
+      lblMail.textContent = AYLLU_CONTACT.email;
+      lblMail.href = AYLLU_CONTACT.emailUrl;
+    }
+  }
+
+  /* Control de navegación móvil */
+  function setupMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const navLinks = document.querySelectorAll('.mobile-nav-link');
+
+    if (!menuBtn || !mobileMenu) return;
+
+    menuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        if (menuIcon) {
+          menuIcon.classList.remove('fa-bars');
+          menuIcon.classList.add('fa-xmark');
+        }
+      } else {
+        mobileMenu.classList.add('hidden');
+        if (menuIcon) {
+          menuIcon.classList.remove('fa-xmark');
+          menuIcon.classList.add('fa-bars');
+        }
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        if (menuIcon) {
+          menuIcon.classList.remove('fa-xmark');
+          menuIcon.classList.add('fa-bars');
+        }
+      });
+    });
+  }
+
+  /* Validación y apertura del mensaje estructurado en WhatsApp */
+  function handleQuoteSubmit(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('client-name').value.trim();
+    const clientWa = document.getElementById('client-whatsapp').value.trim();
+    const service = document.getElementById('service-needed').value;
+    const projectType = document.getElementById('project-type').value;
+    const location = document.getElementById('project-location').value.trim();
+    const budget = document.getElementById('project-budget').value.trim() || 'Por definir según cotización';
+    const desc = document.getElementById('project-description').value.trim();
+
+    const checkboxes = document.querySelectorAll('input[name="has_data"]:checked');
+    const extraData = [];
+    checkboxes.forEach(cb => extraData.push(cb.value));
+    const extraDataStr = extraData.length > 0 ? extraData.join(', ') : 'Ninguno por el momento';
+
+    const waMessage = 
+`🏗️ *SOLICITUD DE COTIZACIÓN - AYLLU DISEÑO & CONSTRUCCIONES*
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 *Cliente:* ${name}
+📱 *WhatsApp de contacto:* ${clientWa}
+📍 *Ubicación del proyecto:* ${location}
+
+📌 *Servicio requerido:* ${service}
+🏢 *Tipo de proyecto:* ${projectType}
+💰 *Presupuesto estimado:* ${budget}
+📁 *Dispone de información:* ${extraDataStr}
+
+📝 *Detalles del proyecto:*
+"${desc}"
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+_Enviado desde el portal web oficial de AYLLU en Cochabamba, Bolivia._`;
+
+    const encodedMessage = encodeURIComponent(waMessage);
+    const targetUrl = `https://wa.me/${AYLLU_CONTACT.whatsappNumber}?text=${encodedMessage}`;
+
+    const feedback = document.getElementById('form-feedback');
+    if (feedback) feedback.classList.remove('hidden');
+
+    setTimeout(() => {
+      window.open(targetUrl, '_blank');
+      if (feedback) feedback.classList.add('hidden');
+    }, 700);
+  }
+
+  /* Consulta rápida por servicio individual */
+  function requestServiceQuote(serviceName) {
+    const message = `Hola AYLLU DISEÑO & CONSTRUCCIONES, me gustaría recibir más información y una cotización para el servicio de: *${serviceName}* en Cochabamba.`;
+    const url = `https://wa.me/${AYLLU_CONTACT.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  /* Consulta desde la sección metodológica */
+  function startConsultationWhatsApp() {
+    const message = `Hola equipo de AYLLU, estuve revisando su metodología de trabajo y quisiera agendar una reunión o consulta técnica para mi proyecto en Cochabamba.`;
+    const url = `https://wa.me/${AYLLU_CONTACT.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  /* Consulta directa desde el hero o botón general */
+  function openDirectWhatsAppModal() {
+    window.open(AYLLU_CONTACT.whatsappMessageUrl, '_blank');
+  }
+
+  /* Filtro de la galería de proyectos */
+  function filterGallery(category) {
+    const buttons = document.querySelectorAll('.gallery-btn');
+    buttons.forEach(btn => {
+      if (btn.getAttribute('data-category') === category) {
+        btn.className = "gallery-btn active px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-gold text-black border border-ayllu-gold";
+      } else {
+        btn.className = "gallery-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap transition-all bg-ayllu-surface text-gray-300 hover:text-white border border-ayllu-border";
+      }
+    });
+
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach(item => {
+      const itemCat = item.getAttribute('data-category');
+      if (category === 'todos' || itemCat === category) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+
+  /* Visor modal Lightbox para imágenes */
+  function openLightbox(title, description, imgUrl, category) {
+    const modal = document.getElementById('lightbox-modal');
+    if (!modal) return;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-desc').textContent = description;
+    document.getElementById('modal-category').textContent = category;
+    document.getElementById('modal-image').src = imgUrl;
+
+    const quoteBtn = document.getElementById('modal-quote-btn');
+    if (quoteBtn) {
+      quoteBtn.onclick = function() {
+        const msg = `Hola AYLLU, me interesó el proyecto de su galería: "*${title}*" (${category}). Quisiera una cotización para algo similar en Cochabamba.`;
+        window.open(`https://wa.me/${AYLLU_CONTACT.whatsappNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+    }
+
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-active');
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById('lightbox-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-active');
+  }
+
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  const lbModal = document.getElementById('lightbox-modal');
+  if (lbModal) {
+    lbModal.addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
+    });
+  }
+</script>
